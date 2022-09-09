@@ -5,6 +5,8 @@
 A custom layout built on top of SwiftUI's Layout API that lays elements out in multiple lines.  
 Similar to flex-wrap in CSS, CollectionViewFlowLayout.
 
+Much better performance rathar than using `GeometryReader`
+
 ## Requirements
 
 Swift 5.7+. 
