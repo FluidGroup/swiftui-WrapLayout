@@ -146,6 +146,34 @@ struct BookWrapLayout_Previews: PreviewProvider {
   }
 }
 
+extension String {
+  static func randomEmoji() -> String {
+    let range = 0x1F601...0x1F64F
+    let ascii = range.lowerBound + Int(arc4random_uniform(UInt32(range.count)))
+
+    var view = UnicodeScalarView()
+    view.append(UnicodeScalar(ascii)!)
+
+    let emoji = String(view)
+
+    return emoji
+  }
+
+}
+
+func makeRandom() -> String {
+
+  let count = (0..<20).map { $0 }
+    .randomElement()!
+
+  return (0..<count)
+    .map { _ in
+      String.randomEmoji()
+    }
+    .joined()
+
+}
+
 /// very beginning
 @available(iOS 16, *)
 struct BookWrapLayout: View {
@@ -158,6 +186,8 @@ struct BookWrapLayout: View {
           .fill(.blue)
       )
   }
+  
+  @State var elements: [String] = []
 
   var body: some View {
 
@@ -165,33 +195,46 @@ struct BookWrapLayout: View {
       VStack {
 
         WrapLayout {
-
-          Group {
-            content("👨🏻🐵👨🏻👨🏻👨🏻")
-            content("👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻")
-            content("🐵🍌")
+          
+          ForEach(elements, id: \.self) { element in
+            content(element)
+              .transition(
+                .scale.animation(.interactiveSpring())
+              )
           }
 
-          Group {
-            content("👨🏻👨🏻👨🏻👨🏻👨🏻🍎👨🏻👨🏻👨🏻👨🏻🍎🍎🍎👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻")
-            content("👨🏻🐵👨🏻")
-            content("👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻")
-            Circle().fill(.yellow).frame(width: nil, height: 70)
-            content("👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻")
-            content("🐵🍌")
-          }
         }
         .background(.black.opacity(0.1))
-        .transition(.scale)
+        
+        Spacer()
+        
+        HStack {
+          Button {
+            elements.append(makeRandom())
+          } label: {
+            Text("Add")
+          }
+          
+          Button {
+            guard elements.isEmpty == false else { return }
+            elements.removeLast()
+          } label: {
+            Text("Remove")
+          }
+          
+          Button {
+            guard elements.isEmpty == false else { return }
+            elements.removeAll()
+          } label: {
+            Text("Clear")
+          }
+        }
+        .font(.caption)
+        .padding(16)
 
       }
+              
 
-      Text("Wrap")
     }
   }
 }
