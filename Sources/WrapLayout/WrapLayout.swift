@@ -1,7 +1,7 @@
 import SwiftUI
 
 @available(iOS 16, *)
-public struct Wrap: Layout {
+public struct WrapLayout: Layout {
 
   public struct CacheStorage {
 
@@ -164,13 +164,10 @@ struct BookWrapLayout: View {
     HStack {
       VStack {
 
-        Wrap {
+        WrapLayout {
 
           Group {
-            content("👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻")
             content("👨🏻🐵👨🏻👨🏻👨🏻")
-            content("👨🏻👨🏻")
-            content("👨🏻👨🏻👨🏻")
             content("👨🏻👨🏻")
             content("👨🏻👨🏻👨🏻👨🏻")
             content("👨🏻👨🏻👨🏻👨🏻👨🏻👨🏻")
