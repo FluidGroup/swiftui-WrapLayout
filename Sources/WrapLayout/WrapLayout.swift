@@ -22,14 +22,18 @@ public struct WrapLayout: Layout {
 
     func calculateSize(verticalSpacing: CGFloat) -> CGSize {
 
+      // get a lenght from the longest line.
       let maxWidth = lines.max(by: { $0.width < $1.width })?.width ?? 0
 
-      let totalHeight =
-        lines.reduce(CGFloat(0.0)) { partialResult, line in
-          partialResult + (line.height + verticalSpacing)
-        } - verticalSpacing /* removing space after the last line */
+      // get a total height by all lines.
+      let totalHeight: CGFloat = lines.reduce(0) { partialResult, line in
+          partialResult + line.height
+      }
+      
+      // total spacing from each line.
+      let verticalSpacing: CGFloat = (CGFloat(max(0, (lines.count - 1))) * verticalSpacing)
 
-      return .init(width: maxWidth, height: totalHeight)
+      return .init(width: maxWidth, height: totalHeight + verticalSpacing)
 
     }
   }
@@ -138,107 +142,3 @@ public struct WrapLayout: Layout {
   }
 
 }
-
-#if DEBUG
-@available(iOS 16, *)
-struct BookWrapLayout_Previews: PreviewProvider {
-  static var previews: some View {
-    BookWrapLayout()
-  }
-}
-
-extension String {
-  static func randomEmoji() -> String {
-    let range = 0x1F601...0x1F64F
-    let ascii = range.lowerBound + Int(arc4random_uniform(UInt32(range.count)))
-
-    var view = UnicodeScalarView()
-    view.append(UnicodeScalar(ascii)!)
-
-    let emoji = String(view)
-
-    return emoji
-  }
-
-}
-
-func makeRandom() -> String {
-
-  let count = (0..<20).map { $0 }
-    .randomElement()!
-
-  return (0..<count)
-    .map { _ in
-      String.randomEmoji()
-    }
-    .joined()
-
-}
-
-/// very beginning
-@available(iOS 16, *)
-struct BookWrapLayout: View {
-
-  private func content(_ text: String) -> some View {
-    Text(text)
-      .padding(4)
-      .background(
-        RoundedRectangle(cornerRadius: 8, style: .continuous)
-          .fill(.blue)
-      )
-  }
-  
-  @State var elements: [String] = []
-
-  var body: some View {
-
-    HStack {
-      VStack {
-
-        WrapLayout {
-          
-          ForEach(elements, id: \.self) { element in
-            content(element)
-              .transition(
-                .scale.animation(.interactiveSpring())
-              )
-          }
-          
-          content("🐵")
-
-        }
-        .background(.black.opacity(0.1))
-        
-        Spacer()
-        
-        HStack {
-          Button {
-            elements.append(makeRandom())
-          } label: {
-            Text("Add")
-          }
-          
-          Button {
-            guard elements.isEmpty == false else { return }
-            elements.removeLast()
-          } label: {
-            Text("Remove")
-          }
-          
-          Button {
-            guard elements.isEmpty == false else { return }
-            elements.removeAll()
-          } label: {
-            Text("Clear")
-          }
-        }
-        .font(.caption)
-        .padding(16)
-
-      }
-              
-
-    }
-  }
-}
-#endif
