@@ -72,7 +72,7 @@ public struct WrapLayout: Layout {
 
       let calculatedSize = view.sizeThatFits(.init(width: bounds.width, height: bounds.height))
 
-      if (calculatedSize.width + offsetX) >= bounds.width {
+      if (calculatedSize.width + offsetX + horizontalSpacing) >= bounds.width {
         // line break
         currentLine.width = offsetX
 
@@ -88,7 +88,7 @@ public struct WrapLayout: Layout {
 
       currentLine.elements.append(calculatedElement)
 
-      offsetX += calculatedSize.width + horizontalSpacing
+      offsetX += calculatedSize.width
 
       if currentLine.height < calculatedElement.size.height {
         currentLine.height = calculatedElement.size.height
@@ -96,6 +96,7 @@ public struct WrapLayout: Layout {
 
     }
 
+    currentLine.width = offsetX
     cache.lines.append(currentLine)
 
     let size = cache.calculateSize(verticalSpacing: verticalSpacing)
