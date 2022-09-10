@@ -37,7 +37,7 @@ public struct WrapLayout: Layout {
   public let horizontalSpacing: CGFloat
   public let verticalSpacing: CGFloat
 
-  init(
+  public init(
     horizontalSpacing: CGFloat = 4,
     verticalSpacing: CGFloat = 4
   ) {
@@ -202,6 +202,8 @@ struct BookWrapLayout: View {
                 .scale.animation(.interactiveSpring())
               )
           }
+          
+          content("🐵")
 
         }
         .background(.black.opacity(0.1))
