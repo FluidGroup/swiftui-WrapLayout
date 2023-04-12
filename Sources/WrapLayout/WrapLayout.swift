@@ -1,12 +1,12 @@
 import SwiftUI
+import Placement
 
-@available(iOS 16, *)
-public struct WrapLayout: Layout {
+public struct WrapLayout: PlacementLayout {
 
   public struct CacheStorage {
 
     struct CalculatedElement {
-      let element: LayoutSubviews.Element
+      let element: Subviews.Element
       let size: CGSize
     }
 
@@ -54,7 +54,7 @@ public struct WrapLayout: Layout {
   }
 
   public func sizeThatFits(
-    proposal: ProposedViewSize,
+    proposal: PlacementProposedViewSize,
     subviews: Subviews,
     cache: inout CacheStorage
   ) -> CGSize {
@@ -110,7 +110,7 @@ public struct WrapLayout: Layout {
 
   public func placeSubviews(
     in bounds: CGRect,
-    proposal: ProposedViewSize,
+    proposal: PlacementProposedViewSize,
     subviews: Subviews,
     cache: inout CacheStorage
   ) {
@@ -127,6 +127,7 @@ public struct WrapLayout: Layout {
             x: bounds.minX + cursorX,
             y: bounds.minY + cursorY
           ),
+          anchor: .topLeading,
           proposal: .init(width: element.size.width, height: element.size.height)
         )
 

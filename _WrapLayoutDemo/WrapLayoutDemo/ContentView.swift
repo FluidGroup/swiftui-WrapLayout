@@ -8,7 +8,6 @@ struct ContentView: View {
 }
 
 #if DEBUG
-@available(iOS 16, *)
 struct BookWrapLayout_Previews: PreviewProvider {
   static var previews: some View {
     BookWrapLayout()
@@ -45,7 +44,6 @@ func makeRandom() -> BookWrapLayout.Element {
 }
 
 /// very beginning
-@available(iOS 16, *)
 struct BookWrapLayout: View {
   
   struct Element: Equatable, Identifiable {
@@ -90,7 +88,7 @@ struct BookWrapLayout: View {
               .animation(.interactiveSpring(), value: elements)
             
           }
-          .background(.black.opacity(0.1))
+          .background(Color.black.opacity(0.1))
 
         }
               
