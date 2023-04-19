@@ -1,5 +1,5 @@
-import SwiftUI
 import Placement
+import SwiftUI
 
 public struct WrapLayout: PlacementLayout {
 
@@ -27,9 +27,9 @@ public struct WrapLayout: PlacementLayout {
 
       // get a total height by all lines.
       let totalHeight: CGFloat = lines.reduce(0) { partialResult, line in
-          partialResult + line.height
+        partialResult + line.height
       }
-      
+
       // total spacing from each line.
       let verticalSpacing: CGFloat = (CGFloat(max(0, (lines.count - 1))) * verticalSpacing)
 
@@ -67,16 +67,22 @@ public struct WrapLayout: PlacementLayout {
       )
     )
 
+    // purge current cache
+    cache.lines = []
+
     var offsetX: Double = 0
     var currentLine: CacheStorage.Line = .init()
 
-    cache.lines = []
-
     for (_, view) in subviews.enumerated() {
 
-      let calculatedSize = view.sizeThatFits(.init(width: bounds.width, height: bounds.height))
+      let calculatedSize = view.sizeThatFits(
+        .init(
+          width: bounds.width,
+          height: bounds.height
+        )
+      )
 
-      if (calculatedSize.width + offsetX + horizontalSpacing) >= bounds.width {
+      if (offsetX + calculatedSize.width) >= bounds.width {
         // line break
         currentLine.width = offsetX
 
@@ -92,7 +98,8 @@ public struct WrapLayout: PlacementLayout {
 
       currentLine.elements.append(calculatedElement)
 
-      offsetX += calculatedSize.width
+      // move cursor including spacing
+      offsetX += calculatedSize.width + horizontalSpacing
 
       if currentLine.height < calculatedElement.size.height {
         currentLine.height = calculatedElement.size.height
