@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
   name: "WrapLayout",
   platforms: [
-    .iOS(.v14)
+    .iOS(.v16)
   ],
   products: [
     // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -18,7 +18,6 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/sampettersson/Placement", exact: "1.4.1"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.1.0"),
   ],
   targets: [
@@ -27,7 +26,6 @@ let package = Package(
     .target(
       name: "WrapLayout",
       dependencies: [
-        "Placement"
       ]
     ),
     .testTarget(

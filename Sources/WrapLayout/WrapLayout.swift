@@ -1,7 +1,6 @@
-import Placement
 import SwiftUI
 
-public struct WrapLayout: PlacementLayout {
+public struct WrapLayout: Layout {
 
   public struct CacheStorage {
 
@@ -54,7 +53,7 @@ public struct WrapLayout: PlacementLayout {
   }
 
   public func sizeThatFits(
-    proposal: PlacementProposedViewSize,
+    proposal: ProposedViewSize,
     subviews: Subviews,
     cache: inout CacheStorage
   ) -> CGSize {
@@ -117,7 +116,7 @@ public struct WrapLayout: PlacementLayout {
 
   public func placeSubviews(
     in bounds: CGRect,
-    proposal: PlacementProposedViewSize,
+    proposal: ProposedViewSize,
     subviews: Subviews,
     cache: inout CacheStorage
   ) {
