@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "placement",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sampettersson/Placement",
-      "state" : {
-        "revision" : "2dc510fb7d36dd49dc3857c95d69653cc3836a40",
-        "version" : "1.4.1"
-      }
-    },
-    {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
