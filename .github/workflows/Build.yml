@@ -8,23 +8,23 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
-    
-    steps:
-      - uses: maxim-lobanov/setup-xcode@v1.1
-        with:
-          xcode-version: "16.0"
-      - uses: actions/checkout@v2
-      - name: xcodebuild
-        run: xcodebuild -scheme WrapLayout -sdk iphoneos -destination 'platform=iOS Simulator,name=iPhone 8,OS=16.2'
-  test:
-    runs-on: macos-14
+    runs-on: macos-26
 
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.1
         with:
-          xcode-version: "16.0"
-      - uses: actions/checkout@v2
-          
+          xcode-version: "26.4"
+      - uses: actions/checkout@v4
+      - name: xcodebuild
+        run: xcodebuild -scheme WrapLayout -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4'
+  test:
+    runs-on: macos-26
+
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1.1
+        with:
+          xcode-version: "26.4"
+      - uses: actions/checkout@v4
+
       - name: Test
-        run: xcodebuild -scheme WrapLayout -resultBundlePath results/WrapLayout.xcresult test -destination 'platform=iOS Simulator,name=iPhone 8,OS=16.2' -derivedDataPath ./DerivedData | xcpretty
+        run: xcodebuild -scheme WrapLayout -resultBundlePath results/WrapLayout.xcresult test -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' -derivedDataPath ./DerivedData | xcpretty

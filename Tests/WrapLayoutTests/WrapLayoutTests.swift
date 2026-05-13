@@ -6,28 +6,24 @@ import SnapshotTesting
 
 final class WrapLayoutTests: XCTestCase {
 
-  override class func setUp() {
-    isRecording = false
-  }
+  private static let data = [
+    "🚕 A",
+    "Hello",
+    "☠️",
+    "危険: 押すな",
+    "🔘",
+    "🍫: Chocolate",
+    "B",
+    "🐕",
+  ]
 
   func testWrapping() throws {
 
     struct Content: View {
 
-      private let data = [
-        "🚕 A",
-        "Hello",
-        "☠️",
-        "危険: 押すな",
-        "🔘",
-        "🍫: Chocolate",
-        "B",
-        "🐕",
-      ]
-
       var body: some View {
         WrapLayout(horizontalSpacing: 4, verticalSpacing: 16) {
-          ForEach(data, id: \.self) { item in
+          ForEach(WrapLayoutTests.data, id: \.self) { item in
             Text(item)
           }
         }
@@ -37,6 +33,95 @@ final class WrapLayoutTests: XCTestCase {
     }
 
     assertSnapshot(matching: Content(), as: .image)
+  }
 
+  func testCenterAligned() throws {
+
+    struct Content: View {
+      var body: some View {
+        WrapLayout(
+          horizontalSpacing: 4,
+          verticalSpacing: 8,
+          lineHorizontalAlignment: .center
+        ) {
+          ForEach(WrapLayoutTests.data, id: \.self) { item in
+            Text(item)
+          }
+        }
+        .background(Color.gray)
+        .frame(width: 200)
+      }
+    }
+
+    assertSnapshot(matching: Content(), as: .image)
+  }
+
+  func testTrailingAligned() throws {
+
+    struct Content: View {
+      var body: some View {
+        WrapLayout(
+          horizontalSpacing: 4,
+          verticalSpacing: 8,
+          lineHorizontalAlignment: .trailing
+        ) {
+          ForEach(WrapLayoutTests.data, id: \.self) { item in
+            Text(item)
+          }
+        }
+        .background(Color.gray)
+        .frame(width: 200)
+      }
+    }
+
+    assertSnapshot(matching: Content(), as: .image)
+  }
+
+  func testVerticalCenterAligned() throws {
+
+    struct Content: View {
+      var body: some View {
+        WrapLayout(
+          horizontalSpacing: 4,
+          verticalSpacing: 8,
+          lineVerticalAlignment: .center
+        ) {
+          Text("Short")
+          Text("Tall")
+            .font(.largeTitle)
+          Text("Mid")
+            .font(.title2)
+          Text("X")
+        }
+        .background(Color.gray)
+        .frame(width: 240)
+      }
+    }
+
+    assertSnapshot(matching: Content(), as: .image)
+  }
+
+  func testVerticalBottomAligned() throws {
+
+    struct Content: View {
+      var body: some View {
+        WrapLayout(
+          horizontalSpacing: 4,
+          verticalSpacing: 8,
+          lineVerticalAlignment: .bottom
+        ) {
+          Text("Short")
+          Text("Tall")
+            .font(.largeTitle)
+          Text("Mid")
+            .font(.title2)
+          Text("X")
+        }
+        .background(Color.gray)
+        .frame(width: 240)
+      }
+    }
+
+    assertSnapshot(matching: Content(), as: .image)
   }
 }
