@@ -26,6 +26,9 @@ jobs:
           xcode-version: "26.4"
       - uses: actions/checkout@v4
 
+      - name: Clear snapshots to force re-record
+        run: rm -rf Tests/WrapLayoutTests/__Snapshots__
+
       - name: Test
         shell: bash
         run: |
