@@ -31,3 +31,13 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild -scheme WrapLayout -resultBundlePath results/WrapLayout.xcresult test -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' -derivedDataPath ./DerivedData | xcpretty
+
+      - name: Upload snapshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-failures
+          path: |
+            Tests/WrapLayoutTests/__Snapshots__/**
+            /tmp/WrapLayoutTests/**
+          if-no-files-found: ignore
