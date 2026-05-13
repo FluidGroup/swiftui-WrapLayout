@@ -32,10 +32,7 @@ final class WrapLayoutTests: XCTestCase {
       }
     }
 
-    assertSnapshot(
-      matching: Content(),
-      as: .image(precision: 0.99, perceptualPrecision: 0.97)
-    )
+    assertSnapshot(matching: Content(), as: .image)
   }
 
   func testCenterAligned() throws {
@@ -56,10 +53,7 @@ final class WrapLayoutTests: XCTestCase {
       }
     }
 
-    assertSnapshot(
-      matching: Content(),
-      as: .image(precision: 0.99, perceptualPrecision: 0.97)
-    )
+    assertSnapshot(matching: Content(), as: .image)
   }
 
   func testTrailingAligned() throws {
@@ -80,10 +74,7 @@ final class WrapLayoutTests: XCTestCase {
       }
     }
 
-    assertSnapshot(
-      matching: Content(),
-      as: .image(precision: 0.99, perceptualPrecision: 0.97)
-    )
+    assertSnapshot(matching: Content(), as: .image)
   }
 
   func testVerticalCenterAligned() throws {
@@ -107,10 +98,7 @@ final class WrapLayoutTests: XCTestCase {
       }
     }
 
-    assertSnapshot(
-      matching: Content(),
-      as: .image(precision: 0.99, perceptualPrecision: 0.97)
-    )
+    assertSnapshot(matching: Content(), as: .image)
   }
 
   func testVerticalBottomAligned() throws {
@@ -134,9 +122,6 @@ final class WrapLayoutTests: XCTestCase {
       }
     }
 
-    assertSnapshot(
-      matching: Content(),
-      as: .image(precision: 0.99, perceptualPrecision: 0.97)
-    )
+    assertSnapshot(matching: Content(), as: .image)
   }
 }
