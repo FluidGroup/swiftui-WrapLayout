@@ -16,7 +16,7 @@ jobs:
           xcode-version: "26.4"
       - uses: actions/checkout@v4
       - name: xcodebuild
-        run: xcodebuild -scheme WrapLayout -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4'
+        run: xcodebuild -scheme WrapLayout -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest'
   test:
     runs-on: macos-26
 
@@ -27,4 +27,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Test
-        run: xcodebuild -scheme WrapLayout -resultBundlePath results/WrapLayout.xcresult test -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.4' -derivedDataPath ./DerivedData | xcpretty
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild -scheme WrapLayout -resultBundlePath results/WrapLayout.xcresult test -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' -derivedDataPath ./DerivedData | xcpretty
