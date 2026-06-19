@@ -60,17 +60,14 @@ public struct WrapLayout: Layout {
     return .init()
   }
 
-  public func sizeThatFits(
-    proposal: ProposedViewSize,
-    subviews: Subviews,
-    cache: inout CacheStorage
-  ) -> CGSize {
+  /// Breaks the subviews into lines that each fit within `maxWidth`.
+  private func calculateLines(
+    maxWidth: CGFloat,
+    maxHeight: CGFloat,
+    subviews: Subviews
+  ) -> [CacheStorage.Line] {
 
-    let maxWidth = proposal.width ?? .infinity
-    let maxHeight = proposal.height ?? .infinity
-
-    cache.lines = []
-
+    var lines: [CacheStorage.Line] = []
     var currentLine = CacheStorage.Line()
 
     for view in subviews {
@@ -89,7 +86,7 @@ public struct WrapLayout: Layout {
       // one element. A single element wider than maxWidth still occupies its
       // own line rather than being skipped.
       if !currentLine.elements.isEmpty, candidateWidth > maxWidth {
-        cache.lines.append(currentLine)
+        lines.append(currentLine)
         currentLine = CacheStorage.Line()
       }
 
@@ -105,8 +102,22 @@ public struct WrapLayout: Layout {
     }
 
     if !currentLine.elements.isEmpty {
-      cache.lines.append(currentLine)
+      lines.append(currentLine)
     }
+
+    return lines
+  }
+
+  public func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout CacheStorage
+  ) -> CGSize {
+
+    let maxWidth = proposal.width ?? .infinity
+    let maxHeight = proposal.height ?? .infinity
+
+    cache.lines = calculateLines(maxWidth: maxWidth, maxHeight: maxHeight, subviews: subviews)
 
     return cache.calculateSize(verticalSpacing: verticalSpacing)
   }
@@ -118,9 +129,20 @@ public struct WrapLayout: Layout {
     cache: inout CacheStorage
   ) {
 
+    // Recompute the line breaking against the actual placement width
+    // (`bounds.width`) instead of reusing `cache.lines`.
+    //
+    // SwiftUI may have last called `sizeThatFits` with a different proposal
+    // than `bounds` — e.g. an ideal/intrinsic measurement with an unspecified
+    // width (`ViewThatFits`, or `UIHostingController.sizingOptions`
+    // `.intrinsicContentSize`), which collapses everything onto a single line.
+    // Reusing that stale cache here clips the items when `bounds` is narrower.
+    let maxHeight = proposal.height ?? .infinity
+    let lines = calculateLines(maxWidth: bounds.width, maxHeight: maxHeight, subviews: subviews)
+
     var cursorY: CGFloat = 0
 
-    for line in cache.lines {
+    for line in lines {
 
       let remainingWidth = max(bounds.width - line.width, 0)
 
